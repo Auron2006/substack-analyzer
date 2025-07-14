@@ -6,13 +6,22 @@ import os
 class EmailAnalyzer:
     def __init__(self, csv_file=None):
         if csv_file is None:
-            csv_file = None
-            for file in os.listdir():
-                if file.endswith('.csv'):
-                    csv_file = file
-                    break
-            if not csv_file:
-                raise FileNotFoundError("No CSV file found in the current directory.")
+            csv_files = [file for file in os.listdir() if file.endswith('.csv')]
+            if not csv_files:
+                raise FileNotFoundError("No CSV files found in the current directory.")
+            print("Multiple CSV files found. Please select one:")
+            for i, file in enumerate(csv_files, 1):
+                print(f"{i}. {file}")
+            while True:
+                try:
+                    choice = int(input("Enter the number of the file to use: "))
+                    if 1 <= choice <= len(csv_files):
+                        csv_file = csv_files[choice - 1]
+                        break
+                    else:
+                        print("Invalid number. Try again.")
+                except ValueError:
+                    print("Please enter a valid number.")
         self.df = pd.read_csv(csv_file)
 
     def generate_report(self, output_file):
