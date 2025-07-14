@@ -1,5 +1,4 @@
 import streamlit as st
-from email_subscriber_analysis import EmailAnalyzer
 import os
 
 st.title("📊 Substack Email Subscriber Analyzer")
