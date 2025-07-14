@@ -63,3 +63,9 @@ class EmailAnalyzer:
 
         with open(output_file, 'w', encoding='utf-8') as f:
             f.write("\n".join(self.report_lines))
+
+    def display_report(self):
+        import streamlit as st
+        st.subheader("📋 Analysis Summary")
+        for line in self.report_lines:
+            st.text(line)
