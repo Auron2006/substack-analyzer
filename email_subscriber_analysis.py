@@ -1,20 +1,14 @@
-import streamlit as st
-import os
+# email_subscriber_analysis.py
 
-st.title("📊 Substack Email Subscriber Analyzer")
-st.write("Upload your Substack email export (`full_email.csv`) to analyze your audience.")
+import pandas as pd
 
-uploaded_file = st.file_uploader("Upload CSV", type=["csv"])
+class EmailAnalyzer:
+    def __init__(self, csv_file):
+        self.df = pd.read_csv(csv_file)
 
-if uploaded_file:
-    csv_filename = "full_email.csv"
-    with open(csv_filename, "wb") as f:
-        f.write(uploaded_file.read())
-
-    analyzer = EmailAnalyzer(csv_filename)
-    with st.spinner("Analyzing data..."):
-        analyzer.generate_report("email_analysis_report.txt")
-
-    st.success("Analysis complete!")
-    with open("email_analysis_report.txt", "r", encoding="utf-8") as f:
-        st.download_button("📄 Download Full Report", f, file_name="email_analysis_report.txt")
+    def generate_report(self, output_file):
+        # Simple example: just list domains of subscribers
+        domains = self.df['Email'].str.split('@').str[1].value_counts()
+        with open(output_file, 'w', encoding='utf-8') as f:
+            f.write("Email domain distribution:\n")
+            f.write(domains.to_string())
