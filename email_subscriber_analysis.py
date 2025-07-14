@@ -1,9 +1,18 @@
 # email_subscriber_analysis.py
 
 import pandas as pd
+import os
 
 class EmailAnalyzer:
-    def __init__(self, csv_file):
+    def __init__(self, csv_file=None):
+        if csv_file is None:
+            csv_file = None
+            for file in os.listdir():
+                if file.endswith('.csv'):
+                    csv_file = file
+                    break
+            if not csv_file:
+                raise FileNotFoundError("No CSV file found in the current directory.")
         self.df = pd.read_csv(csv_file)
 
     def generate_report(self, output_file):
